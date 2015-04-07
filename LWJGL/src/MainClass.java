@@ -18,20 +18,28 @@ import java.awt.image.BufferedImage;
   
 public class MainClass extends JFrame {
 	//float number;
+	
+	float x;
+	float y;
 	/** Maximum data buffers we will need. */
-	  public static final int NUM_BUFFERS = 3;
+	  public static final int NUM_BUFFERS = 4;
 	 
 	  /** Maximum emissions we will need. */
-	  public static final int NUM_SOURCES = 3;
+	  public static final int NUM_SOURCES = 4;
 	 
 	  /** Index of battle sound */
-	  public static final int OCEAN = 0;
+	  public static final int BELLTOWER = 0;
 	 
 	  /** Index of gun 1 sound */
-	  public static final int THUNDER = 1;
+	  public static final int MUSIC = 1;
 	 
 	  /** Index of gun 2 sound */
-	  public static final int WATERDROP = 2;
+	  public static final int TRAFFIC = 2;
+	  
+	  /** Index of gun 2 sound */
+	  public static final int FOOTSTEPS = 3;
+	  
+	  
   /** Buffers hold sound data. */
   IntBuffer buffer = BufferUtils.createIntBuffer(NUM_BUFFERS);
   
@@ -45,7 +53,7 @@ public class MainClass extends JFrame {
   FloatBuffer sourceVel = (FloatBuffer)BufferUtils.createFloatBuffer(3*NUM_BUFFERS);
   
   /** Position of the listener. */
-  FloatBuffer listenerPos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f }).rewind();
+  FloatBuffer listenerPos = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 581.0f, 95.0f, 0.0f }).rewind();
   
   /** Velocity of the listener. */
   FloatBuffer listenerVel = (FloatBuffer)BufferUtils.createFloatBuffer(3).put(new float[] { 0.0f, 0.0f, 0.0f }).rewind();
@@ -65,17 +73,24 @@ public class MainClass extends JFrame {
   
     if(AL10.alGetError() != AL10.AL_NO_ERROR)
       return AL10.AL_FALSE;
+    
+    
+    
  
-    WaveData waveFile = WaveData.create("ocean.wav"); 
-    AL10.alBufferData(buffer.get(OCEAN), waveFile.format, waveFile.data, waveFile.samplerate);
+    WaveData waveFile = WaveData.create("BellTower.wav"); 
+    AL10.alBufferData(buffer.get(BELLTOWER), waveFile.format, waveFile.data, waveFile.samplerate);
     waveFile.dispose();
     
-    waveFile = WaveData.create("thunder.wav"); 
-    AL10.alBufferData(buffer.get(THUNDER), waveFile.format, waveFile.data, waveFile.samplerate);
+    waveFile = WaveData.create("Violin.wav"); 
+    AL10.alBufferData(buffer.get(MUSIC), waveFile.format, waveFile.data, waveFile.samplerate);
     waveFile.dispose();
     
-    waveFile = WaveData.create("waterdrop.wav"); 
-    AL10.alBufferData(buffer.get(WATERDROP), waveFile.format, waveFile.data, waveFile.samplerate);
+    waveFile = WaveData.create("Traffic.wav"); 
+    AL10.alBufferData(buffer.get(TRAFFIC), waveFile.format, waveFile.data, waveFile.samplerate);
+    waveFile.dispose();
+    
+    waveFile = WaveData.create("Footsteps.wav"); 
+    AL10.alBufferData(buffer.get(FOOTSTEPS), waveFile.format, waveFile.data, waveFile.samplerate);
     waveFile.dispose();
   
     // Bind the buffer with the source.
@@ -84,35 +99,45 @@ public class MainClass extends JFrame {
     if (AL10.alGetError() != AL10.AL_NO_ERROR)
       return AL10.AL_FALSE;
     
-    sourcePos.put(0, (float) 25.0);
-    sourcePos.put(1, (float) 25.0);
+    sourcePos.put(0, (float) 581.0);
+    sourcePos.put(1, (float) 95.0);
     sourcePos.put(2, (float) 0.0);
-    AL10.alSourcei(source.get(OCEAN), AL10.AL_BUFFER,   buffer.get(OCEAN) );
-    AL10.alSourcef(source.get(OCEAN), AL10.AL_PITCH,    1.0f          );
-    AL10.alSourcef(source.get(OCEAN), AL10.AL_GAIN,     2.0f          );
-    AL10.alSource (source.get(OCEAN), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(OCEAN*3));
-    AL10.alSource (source.get(OCEAN), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(OCEAN*3)     );
-    AL10.alSourcei(source.get(OCEAN), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+    AL10.alSourcei(source.get(BELLTOWER), AL10.AL_BUFFER,   buffer.get(BELLTOWER) );
+    AL10.alSourcef(source.get(BELLTOWER), AL10.AL_PITCH,    1.0f          );
+    AL10.alSourcef(source.get(BELLTOWER), AL10.AL_GAIN,     2.0f          );
+  //AL10.alSourcef (source.get(BELLTOWER), AL10.AL_MAX_DISTANCE, 2.0f );
+    AL10.alSourcef (source.get(BELLTOWER), AL10.AL_ROLLOFF_FACTOR, 0.0f );
+    AL10.alSource (source.get(BELLTOWER), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(BELLTOWER*3));
+    AL10.alSource (source.get(BELLTOWER), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(BELLTOWER*3)     );
+    AL10.alSourcei(source.get(BELLTOWER), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+   
     
-    sourcePos.put(3, (float) 185.0);
-    sourcePos.put(4, (float) 185.0);
+    sourcePos.put(3, (float) 584.0);
+    sourcePos.put(4, (float) 177.0);
     sourcePos.put(5, (float) 0.0);
-    AL10.alSourcei(source.get(THUNDER), AL10.AL_BUFFER,   buffer.get(THUNDER) );
-    AL10.alSourcef(source.get(THUNDER), AL10.AL_PITCH,    1.0f          );
-    AL10.alSourcef(source.get(THUNDER), AL10.AL_GAIN,     2.0f          );
-    AL10.alSource (source.get(THUNDER), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(THUNDER*3)     );
-    AL10.alSource (source.get(THUNDER), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(THUNDER*3)     );
-    AL10.alSourcei(source.get(THUNDER), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+    AL10.alSourcei(source.get(MUSIC), AL10.AL_BUFFER,   buffer.get(MUSIC) );
+    AL10.alSourcef(source.get(MUSIC), AL10.AL_PITCH,    1.0f          );
+    AL10.alSourcef(source.get(MUSIC), AL10.AL_GAIN,     1.0f          );
+    AL10.alSource (source.get(MUSIC), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(MUSIC*3)     );
+    AL10.alSource (source.get(MUSIC), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(MUSIC*3)     );
+    AL10.alSourcei(source.get(MUSIC), AL10.AL_LOOPING,  AL10.AL_TRUE  );
     
-    sourcePos.put(6, (float) 75.0);
-    sourcePos.put(7, (float) 75.0);
+    sourcePos.put(6, (float) 335.0);
+    sourcePos.put(7, (float) 139.0);
     sourcePos.put(8, (float) 0.0);
-    AL10.alSourcei(source.get(WATERDROP), AL10.AL_BUFFER,   buffer.get(WATERDROP) );
-    AL10.alSourcef(source.get(WATERDROP), AL10.AL_PITCH,    1.0f          );
-    AL10.alSourcef(source.get(WATERDROP), AL10.AL_GAIN,     2.0f          );
-    AL10.alSource (source.get(WATERDROP), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(WATERDROP*3)     );
-    AL10.alSource (source.get(WATERDROP), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(WATERDROP*3)     );
-    AL10.alSourcei(source.get(WATERDROP), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+    AL10.alSourcei(source.get(TRAFFIC), AL10.AL_BUFFER,   buffer.get(TRAFFIC) );
+    AL10.alSourcef(source.get(TRAFFIC), AL10.AL_PITCH,    1.0f          );
+    AL10.alSourcef(source.get(TRAFFIC), AL10.AL_GAIN,     2.0f          );
+    AL10.alSource (source.get(TRAFFIC), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(TRAFFIC*3)     );
+    AL10.alSource (source.get(TRAFFIC), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(TRAFFIC*3)     );
+    AL10.alSourcei(source.get(TRAFFIC), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+    
+    AL10.alSourcei(source.get(FOOTSTEPS), AL10.AL_BUFFER,   buffer.get(FOOTSTEPS) );
+    AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_PITCH,    1.0f          );
+    AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.5f          );
+    AL10.alSource (source.get(FOOTSTEPS), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(FOOTSTEPS*3)     );
+    AL10.alSource (source.get(FOOTSTEPS), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(FOOTSTEPS*3)     );
+    AL10.alSourcei(source.get(FOOTSTEPS), AL10.AL_LOOPING,  AL10.AL_TRUE  );
   
     // Do another error check and return.
     if (AL10.alGetError() == AL10.AL_NO_ERROR)
@@ -147,6 +172,7 @@ public class MainClass extends JFrame {
   public class FrameMouseListener extends MouseAdapter{
 	  public void mouseReleased(MouseEvent e){ 
 		 // AL10.alSourcef(source.get(0), AL10.AL_GAIN,     0.0f          );
+		  AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.0f         );
 		  System.out.println("Mouse Released");
 	  }
   }
@@ -161,13 +187,19 @@ public class MainClass extends JFrame {
 	  public void mouseDragged(MouseEvent e)
 		 {
 		     //AL10.alSourcef(source.get(0), AL10.AL_GAIN,     5.0f          );
-			 float x = e.getX();
-			 float y = e.getY();
+			  x = e.getX();
+			  y = e.getY();
+			  AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.05f          );
+			  sourcePos.put(9, x);
+			  sourcePos.put(10, y);
+			  sourcePos.put(11, (float) 0.0); 
+			  AL10.alSource (source.get(FOOTSTEPS), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(FOOTSTEPS*3)     );
+			  
 			 listenerPos.put(0, x);
 			 listenerPos.put(1, y);
 			 listenerPos.put(2,0);  
-			 System.out.println(listenerPos.get(0) +","+listenerPos.get(1));
-			 System.out.println(sourcePos.get(0) +","+sourcePos.get(1));
+			 //System.out.println(listenerPos.get(0) +","+listenerPos.get(1));
+			 System.out.println(sourcePos.get(9) +","+sourcePos.get(10));
 		
 			 AL10.alListener(AL10.AL_POSITION,    listenerPos);
 		 }
@@ -205,9 +237,9 @@ public class MainClass extends JFrame {
 	  }
 	  
 	  g.drawImage(mapImage,0,0, this);
-     // g.drawImage(img, 140, 135, 20, 20, this);
-      g.drawImage(ocean, 25, 25, 20, 20, this);
-      g.drawImage(thunder, 185, 185, 20, 20, this);
+      //g.drawImage(img, 140, 135, 20, 20, this);
+      //g.drawImage(ocean, 25, 25, 20, 20, this);
+      //g.drawImage(thunder, 185, 185, 20, 20, this);
       g.drawImage(drop, 75, 75, 20, 20, this);
      
       
@@ -217,7 +249,7 @@ public class MainClass extends JFrame {
 	  
 	  //JFrame frame = new JFrame("MyFrame");
 	  MainClass frame = new MainClass();
-	  frame.setSize(300, 300);
+	  frame.setSize(945, 650);
 	  frame.setLocationRelativeTo(null);
 	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  frame.setVisible(true); // Display the frame
@@ -248,9 +280,12 @@ public class MainClass extends JFrame {
  
     setListenerValues();
  
-    AL10.alSourcePlay(source.get(OCEAN));
-    AL10.alSourcePlay(source.get(THUNDER));
-    AL10.alSourcePlay(source.get(WATERDROP));
+    AL10.alSourcePlay(source.get(BELLTOWER));
+    AL10.alSourcePlay(source.get(MUSIC));
+    AL10.alSourcePlay(source.get(TRAFFIC));
+    AL10.alSourcePlay(source.get(FOOTSTEPS));
+      
+    
  
     // Loop.
     long time = Sys.getTime();
