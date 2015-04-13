@@ -21,6 +21,8 @@ public class MainClass extends JFrame {
 	
 	float x;
 	float y;
+	float oldX;
+	float oldY;
 	/** Maximum data buffers we will need. */
 	  public static final int NUM_BUFFERS = 4;
 	 
@@ -99,21 +101,21 @@ public class MainClass extends JFrame {
     if (AL10.alGetError() != AL10.AL_NO_ERROR)
       return AL10.AL_FALSE;
     
-    sourcePos.put(0, (float) 581.0);
-    sourcePos.put(1, (float) 95.0);
+    sourcePos.put(0, (float) 863.0);
+    sourcePos.put(1, (float) 347.0);
     sourcePos.put(2, (float) 0.0);
     AL10.alSourcei(source.get(BELLTOWER), AL10.AL_BUFFER,   buffer.get(BELLTOWER) );
     AL10.alSourcef(source.get(BELLTOWER), AL10.AL_PITCH,    1.0f          );
     AL10.alSourcef(source.get(BELLTOWER), AL10.AL_GAIN,     2.0f          );
   //AL10.alSourcef (source.get(BELLTOWER), AL10.AL_MAX_DISTANCE, 2.0f );
-    AL10.alSourcef (source.get(BELLTOWER), AL10.AL_ROLLOFF_FACTOR, 0.0f );
+    //AL10.alSourcef (source.get(BELLTOWER), AL10.AL_ROLLOFF_FACTOR, 0.0f );
     AL10.alSource (source.get(BELLTOWER), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(BELLTOWER*3));
     AL10.alSource (source.get(BELLTOWER), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(BELLTOWER*3)     );
     AL10.alSourcei(source.get(BELLTOWER), AL10.AL_LOOPING,  AL10.AL_TRUE  );
    
     
-    sourcePos.put(3, (float) 584.0);
-    sourcePos.put(4, (float) 177.0);
+    sourcePos.put(3, (float) 866.0);
+    sourcePos.put(4, (float) 423.0);
     sourcePos.put(5, (float) 0.0);
     AL10.alSourcei(source.get(MUSIC), AL10.AL_BUFFER,   buffer.get(MUSIC) );
     AL10.alSourcef(source.get(MUSIC), AL10.AL_PITCH,    1.0f          );
@@ -122,8 +124,8 @@ public class MainClass extends JFrame {
     AL10.alSource (source.get(MUSIC), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(MUSIC*3)     );
     AL10.alSourcei(source.get(MUSIC), AL10.AL_LOOPING,  AL10.AL_TRUE  );
     
-    sourcePos.put(6, (float) 335.0);
-    sourcePos.put(7, (float) 139.0);
+    sourcePos.put(6, (float) 617.0);
+    sourcePos.put(7, (float) 386.0);
     sourcePos.put(8, (float) 0.0);
     AL10.alSourcei(source.get(TRAFFIC), AL10.AL_BUFFER,   buffer.get(TRAFFIC) );
     AL10.alSourcef(source.get(TRAFFIC), AL10.AL_PITCH,    1.0f          );
@@ -173,22 +175,25 @@ public class MainClass extends JFrame {
 	  public void mouseReleased(MouseEvent e){ 
 		 // AL10.alSourcef(source.get(0), AL10.AL_GAIN,     0.0f          );
 		  AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.0f         );
-		  System.out.println("Mouse Released");
+		  oldX = e.getX();
+		  oldY = e.getY();
+		  System.out.println("Mouse Released "+ e.getX() +" , "+ e.getY());
+		  
+		 
 	  }
   }
   
   public class FrameMouseMotionListener extends MouseMotionAdapter{
-	 /* public void mousePressed(MouseEvent e) {
-	        float x = e.getX();
-	        float y = e.getY();
-	        System.out.println(x + "pressed" + y);
-	    }
-	    */
 	  public void mouseDragged(MouseEvent e)
 		 {
-		     //AL10.alSourcef(source.get(0), AL10.AL_GAIN,     5.0f          );
+		  
 			  x = e.getX();
 			  y = e.getY();
+			  
+			  if(x>oldX){
+				  
+			  }
+		
 			  AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.05f          );
 			  sourcePos.put(9, x);
 			  sourcePos.put(10, y);
@@ -200,7 +205,6 @@ public class MainClass extends JFrame {
 			 listenerPos.put(2,0);  
 			 //System.out.println(listenerPos.get(0) +","+listenerPos.get(1));
 			 System.out.println(sourcePos.get(9) +","+sourcePos.get(10));
-		
 			 AL10.alListener(AL10.AL_POSITION,    listenerPos);
 		 }
   }
@@ -249,7 +253,7 @@ public class MainClass extends JFrame {
 	  
 	  //JFrame frame = new JFrame("MyFrame");
 	  MainClass frame = new MainClass();
-	  frame.setSize(945, 650);
+	  frame.setSize(1200, 510);
 	  frame.setLocationRelativeTo(null);
 	  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	  frame.setVisible(true); // Display the frame
