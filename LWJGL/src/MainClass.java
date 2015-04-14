@@ -246,7 +246,7 @@ public class MainClass extends JFrame {
 
 	/**
 	 * void killALData()
-	 * 
+	 * HELLO THIS IS A CHANGE
 	 * We have allocated memory for our buffers and sources which needs to be
 	 * returned to the system. This function frees that memory.
 	 */
