@@ -15,31 +15,39 @@ import org.lwjgl.util.WaveData;
 import org.lwjgl.Sys;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
-  
+
+
 public class MainClass extends JFrame {
 	//float number;
 	
 	float x;
 	float y;
-	float oldX;
-	float oldY;
 	/** Maximum data buffers we will need. */
-	  public static final int NUM_BUFFERS = 4;
+	  public static final int NUM_BUFFERS = 7;
 	 
 	  /** Maximum emissions we will need. */
-	  public static final int NUM_SOURCES = 4;
+	  public static final int NUM_SOURCES = 7;
 	 
-	  /** Index of battle sound */
+	  /** Index of Bell Tower sound */
 	  public static final int BELLTOWER = 0;
 	 
-	  /** Index of gun 1 sound */
+	  /** Index of musicBuilding 1 sound */
 	  public static final int MUSIC = 1;
 	 
-	  /** Index of gun 2 sound */
+	  /** Index of traffic 2 sound */
 	  public static final int TRAFFIC = 2;
 	  
-	  /** Index of gun 2 sound */
+	  /** Index of Footsteps 2 sound */
 	  public static final int FOOTSTEPS = 3;
+	  
+	  /** Index of bird sound */
+	  public static final int BIRDS = 4;
+	  
+	  /** Index for Stadium */
+	  public static final int STADIUM = 5;
+	  
+	  /** Index for bicycle sound */ 
+	  public static final int BICYCLE = 6;
 	  
 	  
   /** Buffers hold sound data. */
@@ -75,10 +83,6 @@ public class MainClass extends JFrame {
   
     if(AL10.alGetError() != AL10.AL_NO_ERROR)
       return AL10.AL_FALSE;
-    
-    
-    
- 
     WaveData waveFile = WaveData.create("BellTower.wav"); 
     AL10.alBufferData(buffer.get(BELLTOWER), waveFile.format, waveFile.data, waveFile.samplerate);
     waveFile.dispose();
@@ -94,6 +98,20 @@ public class MainClass extends JFrame {
     waveFile = WaveData.create("Footsteps.wav"); 
     AL10.alBufferData(buffer.get(FOOTSTEPS), waveFile.format, waveFile.data, waveFile.samplerate);
     waveFile.dispose();
+   
+    waveFile = WaveData.create("birds.wav"); 
+    AL10.alBufferData(buffer.get(BIRDS), waveFile.format, waveFile.data, waveFile.samplerate);
+    waveFile.dispose();
+ 
+    waveFile = WaveData.create("stadium.wav"); 
+    AL10.alBufferData(buffer.get(STADIUM), waveFile.format, waveFile.data, waveFile.samplerate);
+    waveFile.dispose();
+    
+    
+    waveFile = WaveData.create("birds.wav"); 
+    AL10.alBufferData(buffer.get(BICYCLE), waveFile.format, waveFile.data, waveFile.samplerate);
+    waveFile.dispose();
+   
   
     // Bind the buffer with the source.
     AL10.alGenSources(source);
@@ -107,7 +125,7 @@ public class MainClass extends JFrame {
     AL10.alSourcei(source.get(BELLTOWER), AL10.AL_BUFFER,   buffer.get(BELLTOWER) );
     AL10.alSourcef(source.get(BELLTOWER), AL10.AL_PITCH,    1.0f          );
     AL10.alSourcef(source.get(BELLTOWER), AL10.AL_GAIN,     2.0f          );
-  //AL10.alSourcef (source.get(BELLTOWER), AL10.AL_MAX_DISTANCE, 2.0f );
+    //AL10.alSourcef (source.get(BELLTOWER), AL10.AL_MAX_DISTANCE, 2.0f );
     //AL10.alSourcef (source.get(BELLTOWER), AL10.AL_ROLLOFF_FACTOR, 0.0f );
     AL10.alSource (source.get(BELLTOWER), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(BELLTOWER*3));
     AL10.alSource (source.get(BELLTOWER), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(BELLTOWER*3)     );
@@ -134,6 +152,16 @@ public class MainClass extends JFrame {
     AL10.alSource (source.get(TRAFFIC), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(TRAFFIC*3)     );
     AL10.alSourcei(source.get(TRAFFIC), AL10.AL_LOOPING,  AL10.AL_TRUE  );
     
+    sourcePos.put(12, (float) 985.0);
+    sourcePos.put(13, (float) 429.0);
+    sourcePos.put(14, (float) 0.0);
+    AL10.alSourcei(source.get(BIRDS), AL10.AL_BUFFER,   buffer.get(BIRDS) );
+    AL10.alSourcef(source.get(BIRDS), AL10.AL_PITCH,    1.0f          );
+    AL10.alSourcef(source.get(BIRDS), AL10.AL_GAIN,     2.0f          );
+    AL10.alSource (source.get(BIRDS), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(BIRDS*3)     );
+    AL10.alSource (source.get(BIRDS), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(BIRDS*3)     );
+    AL10.alSourcei(source.get(BIRDS), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+    
     AL10.alSourcei(source.get(FOOTSTEPS), AL10.AL_BUFFER,   buffer.get(FOOTSTEPS) );
     AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_PITCH,    1.0f          );
     AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.5f          );
@@ -141,6 +169,29 @@ public class MainClass extends JFrame {
     AL10.alSource (source.get(FOOTSTEPS), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(FOOTSTEPS*3)     );
     AL10.alSourcei(source.get(FOOTSTEPS), AL10.AL_LOOPING,  AL10.AL_TRUE  );
   
+    
+    sourcePos.put(15, (float) 335.0);
+    sourcePos.put(16, (float) 245.0);
+    sourcePos.put(17, (float) 0.0);
+    AL10.alSourcei(source.get(STADIUM), AL10.AL_BUFFER,   buffer.get(STADIUM) );
+    AL10.alSourcef(source.get(STADIUM), AL10.AL_PITCH,    1.0f          );
+    AL10.alSourcef(source.get(STADIUM), AL10.AL_GAIN,     2.0f          );
+    AL10.alSource (source.get(STADIUM), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(STADIUM*3)     );
+    AL10.alSource (source.get(STADIUM), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(STADIUM*3)     );
+    AL10.alSourcei(source.get(STADIUM), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+    
+    
+    sourcePos.put(18, (float) 811.0);
+    sourcePos.put(19, (float) 190.0);
+    sourcePos.put(20, (float) 0.0);
+    AL10.alSourcei(source.get(BICYCLE), AL10.AL_BUFFER,   buffer.get(BICYCLE) );
+    AL10.alSourcef(source.get(BICYCLE), AL10.AL_PITCH,    1.0f          );
+    AL10.alSourcef(source.get(BICYCLE), AL10.AL_GAIN,     2.0f          );
+    AL10.alSource (source.get(BICYCLE), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(BICYCLE*3)     );
+    AL10.alSource (source.get(BICYCLE), AL10.AL_VELOCITY, (FloatBuffer) sourceVel.position(BICYCLE*3)     );
+    AL10.alSourcei(source.get(BICYCLE), AL10.AL_LOOPING,  AL10.AL_TRUE  );
+    
+
     // Do another error check and return.
     if (AL10.alGetError() == AL10.AL_NO_ERROR)
       return AL10.AL_TRUE;
@@ -173,13 +224,8 @@ public class MainClass extends JFrame {
   
   public class FrameMouseListener extends MouseAdapter{
 	  public void mouseReleased(MouseEvent e){ 
-		 // AL10.alSourcef(source.get(0), AL10.AL_GAIN,     0.0f          );
 		  AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.0f         );
-		  oldX = e.getX();
-		  oldY = e.getY();
-		  System.out.println("Mouse Released "+ e.getX() +" , "+ e.getY());
-		  
-		 
+		  System.out.println("Mouse Released "+ e.getX() +" , "+ e.getY()); 
 	  }
   }
   
@@ -189,17 +235,11 @@ public class MainClass extends JFrame {
 		  
 			  x = e.getX();
 			  y = e.getY();
-			  
-			  if(x>oldX){
-				  
-			  }
-		
 			  AL10.alSourcef(source.get(FOOTSTEPS), AL10.AL_GAIN,     0.05f          );
 			  sourcePos.put(9, x);
 			  sourcePos.put(10, y);
 			  sourcePos.put(11, (float) 0.0); 
 			  AL10.alSource (source.get(FOOTSTEPS), AL10.AL_POSITION, (FloatBuffer) sourcePos.position(FOOTSTEPS*3)     );
-			  
 			 listenerPos.put(0, x);
 			 listenerPos.put(1, y);
 			 listenerPos.put(2,0);  
@@ -238,20 +278,11 @@ public class MainClass extends JFrame {
 	  try {
 	      drop = ImageIO.read(new File("drop.jpg"));
 	  } catch (IOException e) {
-	  }
-	  
+	     }
 	  g.drawImage(mapImage,0,0, this);
-      //g.drawImage(img, 140, 135, 20, 20, this);
-      //g.drawImage(ocean, 25, 25, 20, 20, this);
-      //g.drawImage(thunder, 185, 185, 20, 20, this);
-      g.drawImage(drop, 75, 75, 20, 20, this);
-     
-      
    }
   
   public static void main(String[] args) {
-	  
-	  //JFrame frame = new JFrame("MyFrame");
 	  MainClass frame = new MainClass();
 	  frame.setSize(1200, 510);
 	  frame.setLocationRelativeTo(null);
@@ -266,7 +297,7 @@ public class MainClass extends JFrame {
  
   public void execute() {
 	  
-    // Initialize OpenAL and clear the error bit.
+  
     try{
       AL.create();
     } catch (LWJGLException le) {
@@ -288,20 +319,10 @@ public class MainClass extends JFrame {
     AL10.alSourcePlay(source.get(MUSIC));
     AL10.alSourcePlay(source.get(TRAFFIC));
     AL10.alSourcePlay(source.get(FOOTSTEPS));
-      
+    AL10.alSourcePlay(source.get(BIRDS));
+    AL10.alSourcePlay(source.get(STADIUM));
+    AL10.alSourcePlay(source.get(BICYCLE));
     
- 
-    // Loop.
-    long time = Sys.getTime();
-    long elapse = 0;
- 
-    System.out.println("Press ENTER to exit");
- 
-    //while (!kbhit()) {
-    
-    	// AL10.alSourcePlay(source.get(0));
-   // }
-      
   }
   /**
    *  Check for keyboard hit
